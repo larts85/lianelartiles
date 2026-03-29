@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import '../Styles/footer.css';
 import { images, } from '../constants/images';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import SocialMedia from './SocialMedia';
-import { Tooltip } from '@material-ui/core';
-import { useLocation } from "react-router-dom";
+import Tooltip from '@mui/material/Tooltip';
+import { useLocation } from "react-router";
 
 const Footer = (props) => {
   /* ======================= STATE ======================= */

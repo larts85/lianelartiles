@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { Tooltip } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import Tooltip from '@mui/material/Tooltip';
 import { projects } from '../data/projects';
-import Download from '../images/components/Download';
 import GitHubLogo from '../images/components/GitHub'
 import WWW from '../images/components/WWW';
 import '../Styles/projects.css'
@@ -26,17 +24,15 @@ const Projects = (props = {}) => {
     title: ''
   })
 
-  const JSXTooltip = withStyles(() => ({
-    tooltip: {
-      background: !darkMode
-        ? `linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%), #707070`
-        : `linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%), #292A2E`,
-      maxWidth: 320,
-      fontSize: 16,
-      padding: 15,
-      borderRadius: 10
-    },
-  }))(Tooltip);
+  const tooltipSx = {
+    background: !darkMode
+      ? `linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%), #707070`
+      : `linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0) 100%), #292A2E`,
+    maxWidth: 320,
+    fontSize: 16,
+    padding: "15px",
+    borderRadius: "10px"
+  };
 
   const defineTextLanguage = (project) => {
     const lang = eng ? 'eng' : esp ? 'esp' : 'fre';
@@ -92,9 +88,10 @@ const Projects = (props = {}) => {
             projects.map((project, index) => {
               return (
                 <div className="project-card" key={index}>
-                  {isMobile ? (<JSXTooltip
+                  {isMobile ? (<Tooltip
                     open={tooltipOpened[index]}
                     title={renderTooltipContent(project)}
+                    slotProps={{ tooltip: { sx: tooltipSx } }}
                   >
                     <p id="about" onClick={() => {
                       setOpenTooltipOverlay(true)
@@ -102,12 +99,13 @@ const Projects = (props = {}) => {
                         [index]: !tooltipOpened[index]
                       })
                     }}>?</p>
-                  </JSXTooltip>) :
-                    (<JSXTooltip
+                  </Tooltip>) :
+                    (<Tooltip
                       title={renderTooltipContent(project)}
+                      slotProps={{ tooltip: { sx: tooltipSx } }}
                     >
                       <p id="about">?</p>
-                    </JSXTooltip>)}
+                    </Tooltip>)}
                   <img src={project.logo} alt="ups" id='logo' />
                   <div className="card-links">
                     {project.repo && (
@@ -142,23 +140,6 @@ const Projects = (props = {}) => {
                         </a>
                       </Tooltip>
                     )}
-                    {project.download &&
-                      <Tooltip title="Download App for Android">
-                        <a
-                          id="downloadLink"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={project.download}
-                          download="MoonBank Android App"
-                        >
-                          <Download
-                            size={{ width: "30", height: "30" }}
-                            darkMode={darkMode}
-                            colors={{ light: 'white', dark: '#201E1E' }}
-                          />
-                        </a>
-                      </Tooltip>
-                    }
                     {project.video && (
                       <>
                         <Tooltip

@@ -24,8 +24,8 @@ function App() {
     fre: false,
   });
 
-  const html = document.querySelector("#root");
-  const colors = getComputedStyle(document.querySelector(":root"));
+  const html = document.documentElement;
+  const colors = getComputedStyle(document.documentElement);
 
   /* ======================= FUNCTIONS ======================= */
   useEffect(() => {}, []);

@@ -29,17 +29,18 @@ const ShareOptions = (props = {}) => {
     : languages.esp
       ? "_Te comparto este sitio web que me pareció interesante:_"
       : "_Je vous partage ce site web que j'ai trouvé intéressant:_";
+  const currentUrl = typeof window === "undefined" ? webs.PORTFOLIO : window.location.href;
 
   const shareOptions = [
     {
       logo: WhatsApp,
-      link: `${personalLinks.WHATSAPP}${message} ${webs.PORTFOLIO}`,
+      link: `${personalLinks.WHATSAPP}${message} ${currentUrl}`,
       action: (link) => window.open(link),
     },
     isMobile
       ? {
         logo: Messenger,
-        link: webs.PORTFOLIO,
+        link: currentUrl,
         action: (link) =>
           window.open(
             window.open(personalLinks.MESSENGER + encodeURIComponent(link) + '&app_id=' + encodeURIComponent(REACT_APP_FACEBOOK_API_ID))
@@ -49,7 +50,7 @@ const ShareOptions = (props = {}) => {
     !isMobile
       ? {
         logo: Facebook,
-        link: webs.PORTFOLIO,
+        link: currentUrl,
         action: (link) =>
           window.open(
             window.open(personalLinks.FACEBOOK + 'app_id=' + REACT_APP_FACEBOOK_API_ID + '&link=' + link + '&redirect_uri=' + link)
@@ -61,14 +62,14 @@ const ShareOptions = (props = {}) => {
       action: async () => {
         if (!navigator.clipboard) {
           fallbackCopyTextToClipboard(
-            webs.PORTFOLIO,
+            currentUrl,
             setMessage,
             copiedSuccessfullyMessage,
             copyFailedMessage
           );
           return;
         }
-        navigator.clipboard.writeText(webs.PORTFOLIO).then(
+        navigator.clipboard.writeText(currentUrl).then(
           () =>
             setMessage({
               success: true,
