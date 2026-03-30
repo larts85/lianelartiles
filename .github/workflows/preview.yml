@@ -1,0 +1,107 @@
+name: Preview
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number || github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  WORKER_NAME: lianel
+  WORKERS_SUBDOMAIN: artiles
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Compute preview alias
+        id: alias
+        env:
+          RAW_ALIAS: ${{ github.event.pull_request.head.ref || github.ref_name }}
+        run: |
+          ALIAS=$(echo "$RAW_ALIAS" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]/-/g' | sed 's/--*/-/g' | sed 's/^-//' | sed 's/-$//' | cut -c1-40)
+          if [ -z "$ALIAS" ]; then
+            ALIAS=preview
+          fi
+          echo "alias=$ALIAS" >> "$GITHUB_OUTPUT"
+
+      - name: Upload preview version
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: 4.78.0
+          command: versions upload --preview-alias ${{ steps.alias.outputs.alias }}
+
+      - name: Publish preview summary
+        run: |
+          echo "Preview URL: https://${{ steps.alias.outputs.alias }}-${WORKER_NAME}.${WORKERS_SUBDOMAIN}.workers.dev" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment preview URL on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        env:
+          PREVIEW_ALIAS: ${{ steps.alias.outputs.alias }}
+        with:
+          script: |
+            const previewUrl = `https://${process.env.PREVIEW_ALIAS}-${process.env.WORKER_NAME}.${process.env.WORKERS_SUBDOMAIN}.workers.dev`;
+            const body = [
+              "Preview deployment is ready.",
+              "",
+              `URL: ${previewUrl}`,
+            ].join("\n");
+
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+
+            const comments = await github.rest.issues.listComments({
+              owner,
+              repo,
+              issue_number,
+            });
+
+            const existing = comments.data.find((comment) =>
+              comment.user.type === "Bot" &&
+              comment.body.includes("Preview deployment is ready.")
+            );
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner,
+                repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number,
+                body,
+              });
+            }

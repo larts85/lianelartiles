@@ -1,8 +1,9 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "lianelartiles",
+  "name": "lianel",
   "compatibility_date": "2026-03-17",
   "main": "./workers/app.ts",
+  "preview_urls": true,
   "observability": {
     "enabled": true
   },

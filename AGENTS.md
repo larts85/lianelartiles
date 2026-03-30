@@ -29,6 +29,12 @@ Run `npm test` before opening a PR.
 Keep commits focused and descriptive. Follow [type]/[descriptive-name] for branches.
 Pull requests should include a brief summary and link any relevant issues.
 
+## Branching and Release Policy
+- `master` is production. Agents must not push directly to `master`.
+- `develop` is staging. Agents must not push directly to `develop` unless the user explicitly asks for it.
+- `feature/*` and `fix/*` branches should open PRs into `develop`.
+- `release/*` and `hotfix/*` branches should open PRs into `master`.
+- If an agent needs to prepare work for production, it should prefer creating or updating a `release/*` or `hotfix/*` branch rather than changing `master` directly.
+
 ## Deployment & Configuration Notes
 The app uses Cloudflare Workers as its host. Configuration is handled in `wrangler.jsonc` and `react-router.config.ts`.
-

@@ -151,6 +151,8 @@ GitHub Actions workflows are now committed in:
 
 - [.github/workflows/ci.yml](/Users/imadev/Dev/repos/a-moi/lianelartiles/.github/workflows/ci.yml)
 - [.github/workflows/deploy.yml](/Users/imadev/Dev/repos/a-moi/lianelartiles/.github/workflows/deploy.yml)
+- [.github/workflows/preview.yml](/Users/imadev/Dev/repos/a-moi/lianelartiles/.github/workflows/preview.yml)
+- [.github/workflows/staging.yml](/Users/imadev/Dev/repos/a-moi/lianelartiles/.github/workflows/staging.yml)
 
 The CI pipeline for this codebase is:
 
@@ -170,7 +172,7 @@ Recommended CI responsibilities:
 
 ## Deployment Process
 
-This project now deploys to Cloudflare instead of GitHub Pages.
+This project now deploys to Cloudflare Workers instead of GitHub Pages.
 
 Current deployment flow:
 
@@ -190,9 +192,11 @@ What that does:
 
 GitHub Actions deploy behavior:
 
-1. `CI` runs on pushes to `master` and on pull requests
-2. `Deploy` runs on pushes to `master` and on manual dispatch
-3. `Deploy` re-runs install, typecheck, and build before publishing
+1. `CI` runs on pushes to `master` and `develop`, and on pull requests
+2. `Preview` runs on pull requests that target `develop` or `master`, and uploads a preview Worker version with a stable alias based on the source branch name
+3. `Staging` runs on pushes to `develop` and updates a fixed `staging` preview alias
+4. `Deploy` runs on pushes to `master` and on manual dispatch
+5. `Deploy` re-runs install, typecheck, and build before publishing
 
 Important deployment notes:
 
@@ -206,6 +210,64 @@ Important deployment notes:
 CLOUDFLARE_API_TOKEN
 CLOUDFLARE_ACCOUNT_ID
 ```
+
+### Production and Preview URLs
+
+The Worker name is now configured as `lianel`, so the default production URL pattern is:
+
+```text
+lianel.artiles.workers.dev
+```
+
+Preview URLs are separated from production:
+
+- production: deploys from `master`
+- staging: deploys from `develop`
+- preview: created from pull requests into `develop` or `master` using `wrangler versions upload --preview-alias`
+
+Preview URL pattern:
+
+```text
+<branch-alias>-lianel.artiles.workers.dev
+```
+
+Examples:
+
+```text
+staging-lianel.artiles.workers.dev
+feature-blog-lianel.artiles.workers.dev
+fix-contact-lianel.artiles.workers.dev
+```
+
+This gives you a Vercel-like split between stable production, a fixed staging environment, and per-branch preview environments, while staying fully on Workers.
+
+### Branching Model
+
+The workflows are aligned to this branching strategy:
+
+- `master`
+  production branch
+- `develop`
+  staging branch
+- `feature/*` and `fix/*`
+  open pull requests into `develop`
+- `release/*` and `hotfix/*`
+  open pull requests into `master`
+
+Operational effect:
+
+- pushing to `develop` updates `staging-lianel.artiles.workers.dev`
+- pushing to `master` updates `lianel.artiles.workers.dev`
+- PRs into `develop` or `master` get their own preview URL
+
+### Agent Safety Rule
+
+Agents and automation should follow the same branch policy:
+
+- do not push directly to `master`
+- do not push directly to `develop` unless explicitly requested
+- use `feature/*` or `fix/*` for work intended for `develop`
+- use `release/*` or `hotfix/*` for work intended for `master`
 
 ## Environment and Runtime Notes
 
