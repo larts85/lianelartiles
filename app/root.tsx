@@ -89,7 +89,8 @@ export function Layout({ children }) {
 
 export default function App() {
   const location = useLocation();
-  const isBlog = location.pathname.startsWith("/blog");
+  const isBlog = location.pathname === "/blog" || location.pathname.startsWith("/blog/");
+  const isHome = location.pathname === "/";
   const [darkMode, setDarkMode] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [languages, setLanguages] = useState({
@@ -127,7 +128,7 @@ export default function App() {
   );
 
   return (
-    <div className={`App${isBlog ? " blog-layout" : ""}`}>
+    <div className={`App${isBlog ? " blog-layout" : isHome ? " home-layout" : ""}`} data-theme={darkMode ? "dark" : "light"}>
       <Header darkMode={darkMode} languages={languages} />
       <Outlet context={portfolioContext} />
       <Footer

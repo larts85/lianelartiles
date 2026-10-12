@@ -1,8 +1,8 @@
 #me {
   width: min(100% - 3rem, 1280px);
-  min-height: max(280px, calc(100svh - 230px));
+  min-height: max(280px, calc(100svh - 330px));
   margin: 0 auto;
-  padding: 2rem 0 9rem;
+  padding: 2rem 0 3rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
