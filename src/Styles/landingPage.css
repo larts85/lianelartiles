@@ -1,8 +1,8 @@
 #me {
-  width: min(100% - 3rem, 1280px);
-  min-height: max(280px, calc(100svh - 330px));
+  width: min(100% - 8rem, 1280px);
+  min-height: max(280px, calc(100svh - 120px));
   margin: 0 auto;
-  padding: 2rem 0 3rem;
+  padding: 2rem 0 12rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -27,5 +27,13 @@
   #me {
     align-items: center;
     text-align: center;
+  }
+}
+
+@media (max-width: 600px) {
+  #me {
+    width: calc(100% - 5.5rem);
+    margin-left: 4.5rem;
+    margin-right: 1rem;
   }
 }

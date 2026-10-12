@@ -9,9 +9,9 @@ body {
 .blog-layout[data-theme="dark"] { --blog-surface: #25262a; }
 
 .blog-content {
-  width: min(100% - 3rem, 960px);
+  width: min(100% - 8rem, 960px);
   margin: 0 auto;
-  padding: 2rem 0 3rem;
+  padding: 2rem 0 12rem;
   text-align: left;
   color: var(--text-color-dark);
   overflow-wrap: anywhere;
@@ -26,17 +26,11 @@ body {
 .blog-grid { display: grid; gap: 1.5rem; }
 .blog-card { padding: 1.5rem; border-radius: 16px; background: var(--blog-surface); }
 .blog-content pre { max-width: 100%; overflow-x: auto; padding: 1rem; background: var(--blog-surface); color: var(--text-color-dark); font-size: 0.9rem; }
-/* Reading pages keep controls in normal flow, with no floating rail over text. */
-:is(.blog-layout, .home-layout) > footer { padding: 1rem 1.5rem 0; }
-:is(.blog-layout, .home-layout) .sm { position: static; align-items: center; }
-:is(.blog-layout, .home-layout) .sm > section { display: flex; justify-content: center; width: 100%; }
-:is(.blog-layout, .home-layout) #copyright { position: static; text-align: center; margin: 0.5rem 0; padding: 0; }
-:is(.blog-layout, .home-layout) .main-footer { position: static; min-height: 75px; height: auto; padding: 0.5rem; gap: 0.5rem; flex-wrap: wrap; }
-:is(.blog-layout, .home-layout) .flags { margin-left: 0; flex-direction: row; }
-:is(.blog-layout, .home-layout) #share { bottom: 6rem; left: 1rem; z-index: 11; margin-bottom: 0; width: max-content; max-width: calc(100vw - 2rem); transition: none; }
+/* Reserve space for the original fixed footer and social rail. */
+:is(.blog-layout, .home-layout) #share { bottom: 8rem; left: 4rem; z-index: 11; margin-bottom: 0; width: max-content; max-width: calc(100vw - 5rem); transition: none; }
 :is(.blog-layout, .home-layout) #gitMsg, :is(.blog-layout, .home-layout) #inMsg { display: none; }
 @media (max-width: 600px) {
-  .blog-content { width: calc(100% - 2rem); padding-top: 1rem; }
+  .blog-content { width: calc(100% - 5.5rem); margin-left: 4.5rem; margin-right: 1rem; padding-top: 1rem; }
   .blog-card { padding: 1rem; }
   .main-header .header ul { flex-wrap: wrap; justify-content: center; }
   .main-header .header span { padding: 5px; }
