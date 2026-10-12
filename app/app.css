@@ -1,0 +1,6 @@
+@import "../src/index.css";
+@import "../src/App.css";
+
+body {
+  min-height: 100vh;
+}
