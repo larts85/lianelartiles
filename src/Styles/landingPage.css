@@ -1,55 +1,31 @@
 #me {
-  position: fixed;
-  min-height: auto;
-  width: fit-content;
-  top: 40%;
-  bottom: 60%;
-  right: 90%;
-  left: 10%;
+  width: min(100% - 3rem, 1280px);
+  min-height: max(280px, calc(100svh - 230px));
   margin: 0 auto;
-  text-align: right;
-}
-#me::-webkit-scrollbar {
-  display: none;
+  padding: 2rem 0 9rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: left;
+  overflow-wrap: anywhere;
 }
 #las {
-  font-size: 8vw;
+  font-size: clamp(2.25rem, 7vw, 6rem);
+  line-height: 1.15;
 }
 #dev {
-  font-size: 3vw;
+  font-size: clamp(1.1rem, 2.8vw, 2.5rem);
+  line-height: 1.4;
+  margin-top: 1rem;
 }
 #lema {
-  font-size: 2vw;
-}
-@media (orientation: portrait) {
-  #me {
-    text-align: center;
-  }
+  font-size: clamp(1rem, 2vw, 1.8rem);
+  margin-top: 0.75rem;
 }
 @media (max-width: 800px) {
-  #las {
-    font-size: 10vw;
-  }
-  #dev {
-    font-size: 5vw;
-  }
-  #lema {
-    font-size: 3.5vw;
-  }
   #me {
-    right: 0;
-    left: 0;
+    align-items: center;
     text-align: center;
-  }
-}
-@media (orientation: landscape) and (max-height: 450px) {
-  #las {
-    font-size: 6vw;
-  }
-  #dev {
-    font-size: 2vw;
-  }
-  #lema {
-    font-size: 1.5vw;
   }
 }
