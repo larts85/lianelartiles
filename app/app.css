@@ -4,3 +4,34 @@
 body {
   min-height: 100vh;
 }
+
+.blog-layout { --blog-surface: #fff; }
+.blog-layout[data-theme="dark"] { --blog-surface: #25262a; }
+
+.blog-content {
+  width: min(100% - 8rem, 960px);
+  margin: 0 auto;
+  padding: 2rem 0 12rem;
+  text-align: left;
+  color: var(--text-color-dark);
+  overflow-wrap: anywhere;
+  line-height: 1.7;
+}
+.blog-post { max-width: 800px; }
+.blog-content h1 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.25; }
+.blog-content h2 { line-height: 1.35; }
+.blog-content a { color: var(--text-color-dark); text-decoration: underline; }
+.blog-content time { display: block; opacity: 0.75; margin-top: 1rem; }
+.blog-intro { margin-bottom: 2rem; }
+.blog-grid { display: grid; gap: 1.5rem; }
+.blog-card { padding: 1.5rem; border-radius: 16px; background: var(--blog-surface); }
+.blog-content pre { max-width: 100%; overflow-x: auto; padding: 1rem; background: var(--blog-surface); color: var(--text-color-dark); font-size: 0.9rem; }
+/* Reserve space for the original fixed footer and social rail. */
+:is(.blog-layout, .home-layout) #share { bottom: 8rem; left: 4rem; z-index: 11; margin-bottom: 0; width: max-content; max-width: calc(100vw - 5rem); transition: none; }
+:is(.blog-layout, .home-layout) #gitMsg, :is(.blog-layout, .home-layout) #inMsg { display: none; }
+@media (max-width: 600px) {
+  .blog-content { width: calc(100% - 5.5rem); margin-left: 4.5rem; margin-right: 1rem; padding-top: 1rem; }
+  .blog-card { padding: 1rem; }
+  .main-header .header ul { flex-wrap: wrap; justify-content: center; }
+  .main-header .header span { padding: 5px; }
+}

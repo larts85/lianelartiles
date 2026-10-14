@@ -52,7 +52,7 @@ const Footer = (props) => {
       <nav className='main-footer' onClick={() => setOpen(false)}>
         <div className='flags' onClick={() => setOpen(false)}>
           {Object.keys(languages).map((key, index) => !languages[key] && (
-            <button key={index} id={key} onClick={() => setLanguages({
+            <button key={index} id={key} aria-label={key === "eng" ? "English" : key === "esp" ? "Español" : "Français"} onClick={() => setLanguages({
               esp: false,
               eng: false,
               fre: false,

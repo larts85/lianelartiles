@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import {
   isRouteErrorResponse,
+  useLocation,
   Links,
   Meta,
   Outlet,
@@ -87,6 +88,9 @@ export function Layout({ children }) {
 }
 
 export default function App() {
+  const location = useLocation();
+  const isBlog = location.pathname === "/blog" || location.pathname.startsWith("/blog/");
+  const isHome = location.pathname === "/";
   const [darkMode, setDarkMode] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [languages, setLanguages] = useState({
@@ -108,6 +112,10 @@ export default function App() {
     applyThemeVariables(darkMode);
   }, [darkMode]);
 
+  useEffect(() => {
+    document.documentElement.lang = languages.esp ? "es" : languages.fre ? "fr" : "en";
+  }, [languages]);
+
   const portfolioContext = useMemo(
     () => ({
       darkMode,
@@ -120,7 +128,7 @@ export default function App() {
   );
 
   return (
-    <div className="App">
+    <div className={`App${isBlog ? " blog-layout" : isHome ? " home-layout" : ""}`} data-theme={darkMode ? "dark" : "light"}>
       <Header darkMode={darkMode} languages={languages} />
       <Outlet context={portfolioContext} />
       <Footer
