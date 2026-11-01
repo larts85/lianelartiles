@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import '../Styles/footer.css';
 import { images, } from '../constants/images';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import SocialMedia from './SocialMedia';
-import { Tooltip } from '@material-ui/core';
-import { useLocation } from "react-router-dom";
+import Tooltip from '@mui/material/Tooltip';
+import { useLocation } from "react-router";
 
 const Footer = (props) => {
   /* ======================= STATE ======================= */
@@ -52,7 +52,7 @@ const Footer = (props) => {
       <nav className='main-footer' onClick={() => setOpen(false)}>
         <div className='flags' onClick={() => setOpen(false)}>
           {Object.keys(languages).map((key, index) => !languages[key] && (
-            <button key={index} id={key} onClick={() => setLanguages({
+            <button key={index} id={key} aria-label={key === "eng" ? "English" : key === "esp" ? "Español" : "Français"} onClick={() => setLanguages({
               esp: false,
               eng: false,
               fre: false,

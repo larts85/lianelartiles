@@ -1,6 +1,5 @@
 import { technologies } from "../constants/technologies";
 import { media, repos, webs } from "../constants/links";
-import MoonBankApk from "../data/MoonBank.apk";
 import { logos } from "../constants/logos";
 
 export const projects = [
@@ -59,7 +58,6 @@ export const projects = [
     },
     webSite: false,
     repo: repos.MOONKBANK,
-    download: MoonBankApk,
     video: media.MOONKBANK_VIDEO,
   },
   {

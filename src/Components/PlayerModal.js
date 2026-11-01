@@ -1,10 +1,11 @@
 import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { makeStyles } from "@material-ui/core/styles";
 import ReactPlayer from "react-player";
 
-const useStyles = makeStyles(() => ({
-  modal: ({ open }) => ({
+const PlayerModal = (props) => {
+  const { videoTitle, open, setOpen, darkMode, playerProps } = props;
+
+  const modalStyle = {
     display: open ? "flex" : "none",
     flexDirection: "column",
     position: "fixed",
@@ -16,37 +17,32 @@ const useStyles = makeStyles(() => ({
       : "translate(-50%, -50%) scale(0)",
     boxShadow: "none",
     zIndex: 100,
-  }),
-  header: ({ darkMode }) => ({
+  };
+  const headerStyle = {
     borderTopLeftRadius: 10,
     borderTopRightRadius: 10,
-    backgroundColor: `${darkMode ? "#292a2e" : "#b8b8b8"}`,
+    backgroundColor: darkMode ? "#292a2e" : "#b8b8b8",
     background:
       "linear-gradient(180deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%), #B8B8B8",
     display: "flex",
     justifyContent: "space-between",
     width: "100%",
     borderBottom: `solid 1px ${darkMode ? "#292a2e" : "#b8b8b8"}`,
-    "& h1": {
-      color: `${darkMode ? "#fff" : "#292a2e"}`,
-      paddingLeft: 15,
-    },
-    "& button": {
-      color: `${darkMode ? "#fff" : "#292a2e"}`,
-      backgroundColor: "transparent",
-      border: "none",
-      fontSize: 28,
-      cursor: "pointer",
-      fontWeight: "bold",
-      outline: "none",
-      paddingRight: 15,
-    },
-  }),
-}));
-
-const PlayerModal = (props) => {
-  const { videoTitle, open, setOpen, darkMode, playerProps } = props;
-  const classes = useStyles({ open, darkMode });
+  };
+  const titleStyle = {
+    color: darkMode ? "#fff" : "#292a2e",
+    paddingLeft: 15,
+  };
+  const closeButtonStyle = {
+    color: darkMode ? "#fff" : "#292a2e",
+    backgroundColor: "transparent",
+    border: "none",
+    fontSize: 28,
+    cursor: "pointer",
+    fontWeight: "bold",
+    outline: "none",
+    paddingRight: 15,
+  };
 
   useEffect(() => {
     document.addEventListener("keydown", escFunction, false);
@@ -64,10 +60,10 @@ const PlayerModal = (props) => {
   }, []);
 
   return (
-    <div className={classes.modal}>
-      <div className={classes.header}>
-        <h1>{videoTitle}</h1>
-        <button onClick={() => setOpen(!open)}>&times;</button>
+    <div style={modalStyle}>
+      <div style={headerStyle}>
+        <h1 style={titleStyle}>{videoTitle}</h1>
+        <button style={closeButtonStyle} onClick={() => setOpen(!open)}>&times;</button>
       </div>
       <div>
         <ReactPlayer {...playerProps} />

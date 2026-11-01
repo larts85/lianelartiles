@@ -1,6 +1,6 @@
 /* ======================= IMPORTATIONS ======================= */
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router'
 import '../Styles/header.css';
 import { logos } from "../constants/logos";
 
@@ -30,6 +30,9 @@ const Header = (props) => {
           </Link>
           <Link className={location.pathname === '/projects' ? 'link hLinkSelected' : 'link hlink'} to='/projects'>
             <span>{languages.eng ? 'Projects' : languages.esp ? 'Proyectos' : 'Projects'}</span>
+          </Link>
+          <Link className={location.pathname.startsWith('/blog') ? 'link hLinkSelected' : 'link hlink'} to='/blog'>
+            <span>{languages.eng ? 'Blog' : languages.esp ? 'Blog' : 'Blog'}</span>
           </Link>
         </ul>
       </nav>

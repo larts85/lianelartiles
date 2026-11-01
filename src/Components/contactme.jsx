@@ -1,10 +1,7 @@
 /* ======================== IMPORTATIONS ========================= */
 import React, { useState, useEffect } from 'react'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 import '../Styles/contactme.css'
-import emailjs, { init } from 'emailjs-com';
-
-init("user_mF5LDF8IugLjLsmSkJldy");
 
 const ContactMe = (props) => {
   /* ======================= STATE & VARS ======================== */
@@ -33,25 +30,29 @@ const ContactMe = (props) => {
   let secondLine = '';
 
   /* ======================== FUNCTIONS ========================= */
-  const sendEmail = (e) => {
+  const sendEmail = async (e) => {
     e.preventDefault();
     const valid = validateForm()
     if (valid) {
       setLoading(true);
-      emailjs.send('service_vyjgfjc', templateId, {
-        message: state.body,
-        from_name: state.name,
-        reply_to: state.email,
-        to_name: 'imadev'
-      })
-        .then((result) => {
-          if (result.text === 'OK') {
-            setLoading(false)
-            setSuccess(true)
-          }
-        }, (error) => {
-          console.log('Error', error.text);
+      try {
+        const emailjs = await import('emailjs-com');
+        emailjs.init("user_mF5LDF8IugLjLsmSkJldy");
+        const result = await emailjs.send('service_vyjgfjc', templateId, {
+          message: state.body,
+          from_name: state.name,
+          reply_to: state.email,
+          to_name: 'imadev'
         });
+
+        if (result.text === 'OK') {
+          setSuccess(true)
+        }
+      } catch (error) {
+        console.log('Error', error);
+      } finally {
+        setLoading(false);
+      }
       e.target.reset();
     }
   }
